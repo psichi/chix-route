@@ -22,6 +22,27 @@ var Flow = (function () {
         return this._paths;
     };
 
+    Flow.prototype.batch = function () {
+        var pos = this.position();
+
+        if (!pos.length)
+            return [];
+
+        var batch = [];
+        for (var i = 0; i < pos[0].length; i++) {
+            var column = [];
+            for (var j = 0; j < pos.length; j++) {
+                if (column.indexOf(pos[j][i]) < 0 & pos[j][i] !== null) {
+                    column.push(pos[j][i]);
+                }
+            }
+
+            batch.push(column);
+        }
+
+        return batch;
+    };
+
     Flow.prototype.position = function () {
         var posMap = this.posMap();
         for (var i = 0; i < this._paths.length; i++) {
