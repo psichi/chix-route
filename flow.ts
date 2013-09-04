@@ -29,6 +29,10 @@ class Flow {
 
   }
 
+  public setPaths(paths) {
+    this._paths = paths;
+  }
+
   /**
    *
    * Create a position map of the last occurence

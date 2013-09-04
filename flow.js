@@ -22,6 +22,10 @@ var Flow = (function () {
         return this._paths;
     };
 
+    Flow.prototype.setPaths = function (paths) {
+        this._paths = paths;
+    };
+
     /**
     *
     * Create a position map of the last occurence
