@@ -22,6 +22,19 @@ var Flow = (function () {
         return this._paths;
     };
 
+    Flow.prototype.position = function () {
+        var posMap = this.posMap();
+        for (var i = 0; i < this._paths.length; i++) {
+            for (var j = 0; j < this._paths[i].length; j++) {
+                if (j < posMap[this._paths[i][j]]) {
+                    this._paths[i].splice(j, 0, null);
+                }
+            }
+        }
+
+        return this._paths;
+    };
+
     /**
     *
     * Create a position map of the last occurence

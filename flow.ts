@@ -29,6 +29,24 @@ class Flow {
 
   }
 
+  public position() {
+
+    var posMap = this.posMap();
+    for(var i = 0; i < this._paths.length; i++) {
+      for(var j = 0; j < this._paths[i].length; j++) {
+
+        // func 1
+        if(j < posMap[this._paths[i][j]]) {
+           this._paths[i].splice(j, 0, null);
+        }
+
+      }
+    }
+
+    return this._paths;
+
+  }
+
   /**
    *
    * Create a position map of the last occurence
@@ -38,9 +56,12 @@ class Flow {
     var m = {};
     for(var i = 0; i < this._paths.length; i++) {
       for(var j = 0; j < this._paths[i].length; j++) {
+
+        // func 2 
         if(!m[this._paths[i][j]] || m[this._paths[i][j]] < j) {
           m[this._paths[i][j]] = j;
         }
+
       }
     }
     return m;
