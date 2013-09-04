@@ -1,0 +1,26 @@
+{
+  "name" : "chix-flow",
+  "version" : "0.0.1",
+  "user" : "Rob Halff",
+  "domain": "robberthalff.com",
+  "description": "Chiχ flow",
+  "main": "flow",
+  "keywords": [
+    "flow"
+  ],
+  "maintainers": [
+    {
+      "name": "Rob Halff",
+      "email": "rob.halff@gmail.com",
+      "web": "http://www.robberthalff.com" 
+    } 
+  ],
+  "dependencies": {
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "LICENSE"
+    }
+  ]
+}
