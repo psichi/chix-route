@@ -2,6 +2,7 @@ var Flow = (function () {
     function Flow(flow) {
         this.flow = flow;
         this._paths = [];
+        // create input map, before position will modify the paths.
     }
     Flow.prototype.paths = function (root) {
         var that = this;
@@ -22,6 +23,16 @@ var Flow = (function () {
         return this._paths;
     };
 
+    Flow.prototype._inputMap = function () {
+        var inputMap = {};
+
+        return inputMap;
+    };
+
+    Flow.prototype.inputMap = function () {
+        return this._inputMap();
+    };
+
     Flow.prototype.batch = function () {
         var pos = this.position();
 
@@ -32,7 +43,7 @@ var Flow = (function () {
         for (var i = 0; i < pos[0].length; i++) {
             var column = [];
             for (var j = 0; j < pos.length; j++) {
-                if (column.indexOf(pos[j][i]) < 0 & pos[j][i] !== null) {
+                if (column.indexOf(pos[j][i]) < 0 & null !== pos[j][i]) {
                     column.push(pos[j][i]);
                 }
             }
@@ -48,6 +59,7 @@ var Flow = (function () {
         for (var i = 0; i < this._paths.length; i++) {
             for (var j = 0; j < this._paths[i].length; j++) {
                 if (j < posMap[this._paths[i][j]]) {
+                    // Alert! modifies this._paths in place.
                     this._paths[i].splice(j, 0, null);
                 }
             }

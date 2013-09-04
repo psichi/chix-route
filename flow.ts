@@ -6,6 +6,8 @@ class Flow {
 
   constructor (public flow:Object) {
 
+    // create input map, before position will modify the paths.
+
   }
 
   public paths(root) {
@@ -29,6 +31,20 @@ class Flow {
 
   }
 
+  private _inputMap() {
+
+    var inputMap = {};
+
+    return inputMap;
+
+  }
+
+  public inputMap() {
+
+    return this._inputMap();
+
+  }
+
   public batch() {
 
     var pos = this.position();
@@ -41,7 +57,7 @@ class Flow {
       var column = [];
       for(var j = 0; j < pos.length; j++) {
 
-        if(column.indexOf(pos[j][i]) < 0 & pos[j][i] !== null) {
+        if(column.indexOf(pos[j][i]) < 0 & null !== pos[j][i]) {
           column.push(pos[j][i]);
         }
 
@@ -60,9 +76,11 @@ class Flow {
     for(var i = 0; i < this._paths.length; i++) {
       for(var j = 0; j < this._paths[i].length; j++) {
 
-        // func 1
         if(j < posMap[this._paths[i][j]]) {
+
+           // Alert! modifies this._paths in place.
            this._paths[i].splice(j, 0, null);
+
         }
 
       }
