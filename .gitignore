@@ -1,5 +1,6 @@
 references
 *.txt
+*.swp
 ATTIC
 TODO
 node_modules
