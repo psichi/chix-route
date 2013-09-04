@@ -12,11 +12,11 @@ class Flow {
 
     var that = this;
     function __paths(id, ref) {
-      if(that.flow[id].target.length > 0) {
-        for(var i = 0; i < that.flow[id].target.length; i++) {
+      if(that.flow[id].length > 0) {
+        for(var i = 0; i < that.flow[id].length; i++) {
           var d = ref.slice(0);
-          d.push(that.flow[id].target[i]);
-          __paths(that.flow[id].target[i], d);
+          d.push(that.flow[id][i]);
+          __paths(that.flow[id][i], d);
         }
       } else {
         that._paths.push(ref);
