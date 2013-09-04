@@ -3,10 +3,12 @@ declare var module;
 class Flow {
 
   private _paths:Array = [];
+  private _inputMap:Object = {};
 
   constructor (public flow:Object) {
 
-    // create input map, before position will modify the paths.
+    // create input map, before position() will modify the paths.
+    this.__inputMap();
 
   }
 
@@ -31,17 +33,34 @@ class Flow {
 
   }
 
-  private _inputMap() {
+  private __inputMap() {
 
-    var inputMap = {};
+    var fk = true;
 
-    return inputMap;
+    for(var key in this.flow) {
+
+      if(fk) {
+        this._inputMap[key] = [];
+        fk = false;
+      }
+
+      for(var i = 0; i < this.flow[key].length; i++) {
+
+        if(!this._inputMap[this.flow[key][i]]) this._inputMap[this.flow[key][i]] = [];
+
+        this._inputMap[this.flow[key][i]].push(key);
+
+      }
+
+    }
+
+    return this._inputMap;
 
   }
 
   public inputMap() {
 
-    return this._inputMap();
+    return this._inputMap;
 
   }
 

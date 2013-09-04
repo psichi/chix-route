@@ -2,7 +2,9 @@ var Flow = (function () {
     function Flow(flow) {
         this.flow = flow;
         this._paths = [];
-        // create input map, before position will modify the paths.
+        this._inputMap = {};
+        // create input map, before position() will modify the paths.
+        this.__inputMap();
     }
     Flow.prototype.paths = function (root) {
         var that = this;
@@ -23,14 +25,28 @@ var Flow = (function () {
         return this._paths;
     };
 
-    Flow.prototype._inputMap = function () {
-        var inputMap = {};
+    Flow.prototype.__inputMap = function () {
+        var fk = true;
 
-        return inputMap;
+        for (var key in this.flow) {
+            if (fk) {
+                this._inputMap[key] = [];
+                fk = false;
+            }
+
+            for (var i = 0; i < this.flow[key].length; i++) {
+                if (!this._inputMap[this.flow[key][i]])
+                    this._inputMap[this.flow[key][i]] = [];
+
+                this._inputMap[this.flow[key][i]].push(key);
+            }
+        }
+
+        return this._inputMap;
     };
 
     Flow.prototype.inputMap = function () {
-        return this._inputMap();
+        return this._inputMap;
     };
 
     Flow.prototype.batch = function () {
