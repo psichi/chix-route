@@ -1,6 +1,6 @@
 require('should');
 var fs = require("fs");
-var Route = require('../route.js');
+var Route = require('../main.js');
 var json;
 
 describe("Route test:", function () {

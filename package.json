@@ -4,7 +4,7 @@
   "user" : "Rob Halff",
   "domain": "robberthalff.com",
   "description": "Chiχ route",
-  "main": "route",
+  "main": "main",
   "keywords": [
     "flow",
     "route"
