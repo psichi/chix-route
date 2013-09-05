@@ -100,6 +100,12 @@ var Flow = (function () {
         }
         return m;
     };
+
+    Flow.prototype.objectMap = function () {
+        var objectMap = {};
+
+        return objectMap;
+    };
     return Flow;
 })();
 

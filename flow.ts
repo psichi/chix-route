@@ -129,6 +129,14 @@ class Flow {
     return m;
   }
 
+  public objectMap() {
+
+    var objectMap = {};
+
+    return objectMap;
+
+  }
+
 }
 
 module.exports = Flow

@@ -280,8 +280,8 @@ describe("Flow test:", function () {
     };
 
     var flow = new Flow(data);
-    var paths = flow.paths("4");
-    paths.should.eql([
+    flow.paths("4");
+    flow.objectMap().should.eql([
         {
           "0": {
             source: null,
