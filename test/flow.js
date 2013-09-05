@@ -257,4 +257,41 @@ describe("Flow test:", function () {
 
   });
 
+  it("Should be able to provide a source target collection array", function (done) {
+
+    var data = {
+      "0": ["1", "2", "3"],
+      "1": ["4", "14"],
+      "2": ["5"],
+      "3": ["6"],
+      "4": ["7", "9"],
+      "5": ["9"],
+      "6": ["11"],
+      "7": ["8"],
+      "8": ["13"],
+      "9": ["10"],
+      "10": ["13"],
+      "11": ["12"],
+      "12": ["13"],
+      "13": ["14"],
+      "14": ["15"],
+      "15": ["16"],
+      "16": []
+    };
+
+    var flow = new Flow(data);
+    var paths = flow.paths("4");
+    paths.should.eql([
+        {
+          "0": {
+            source: null,
+            target: null,
+          }
+        }
+    ]);
+
+    done();
+
+  });
+
 });
