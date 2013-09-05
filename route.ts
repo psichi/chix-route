@@ -1,11 +1,11 @@
 declare var module;
 
-class Flow {
+class Route {
 
   private _paths:Array = [];
   private _inputMap:Object = {};
 
-  constructor (public flow:Object) {
+  constructor (public routes:Object) {
 
     // create input map, before position() will modify the paths.
     this.__inputMap();
@@ -16,11 +16,11 @@ class Flow {
 
     var that = this;
     function __paths(id, ref) {
-      if(that.flow[id].length > 0) {
-        for(var i = 0; i < that.flow[id].length; i++) {
+      if(that.routes[id].length > 0) {
+        for(var i = 0; i < that.routes[id].length; i++) {
           var d = ref.slice(0);
-          d.push(that.flow[id][i]);
-          __paths(that.flow[id][i], d);
+          d.push(that.routes[id][i]);
+          __paths(that.routes[id][i], d);
         }
       } else {
         that._paths.push(ref);
@@ -37,18 +37,18 @@ class Flow {
 
     var fk = true;
 
-    for(var key in this.flow) {
+    for(var key in this.routes) {
 
       if(fk) {
         this._inputMap[key] = [];
         fk = false;
       }
 
-      for(var i = 0; i < this.flow[key].length; i++) {
+      for(var i = 0; i < this.routes[key].length; i++) {
 
-        if(!this._inputMap[this.flow[key][i]]) this._inputMap[this.flow[key][i]] = [];
+        if(!this._inputMap[this.routes[key][i]]) this._inputMap[this.routes[key][i]] = [];
 
-        this._inputMap[this.flow[key][i]].push(key);
+        this._inputMap[this.routes[key][i]].push(key);
 
       }
 
@@ -139,4 +139,4 @@ class Flow {
 
 }
 
-module.exports = Flow
+module.exports = Route 

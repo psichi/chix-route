@@ -1,4 +1,4 @@
-chix-route
+Chiχ route
 =========
 
 ```

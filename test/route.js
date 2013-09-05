@@ -1,11 +1,11 @@
 require('should');
 var fs = require("fs");
-var Flow = require('../flow.js');
+var Route = require('../route.js');
 var json;
 
-describe("Flow test:", function () {
+describe("Route test:", function () {
 
-  it("Should flow", function (done) {
+  it("Should route", function (done) {
 
     var data = {
       "0": ["1","2"],
@@ -13,8 +13,8 @@ describe("Flow test:", function () {
       "2": []
     };
 
-    var flow = new Flow(data);
-    flow.paths("0").should.eql([
+    var route = new Route(data);
+    route.paths("0").should.eql([
         [ '0', '1', '2' ],
         [ '0', '2' ]
     ]);
@@ -23,7 +23,7 @@ describe("Flow test:", function () {
 
   });
 
-  it("Should flow complex tree", function (done) {
+  it("Should route complex tree", function (done) {
 
     var data = {
       "0": ["1","2","3"] ,
@@ -34,8 +34,8 @@ describe("Flow test:", function () {
       "5": []
     };
 
-    var flow = new Flow(data);
-    flow.paths("0").should.eql([
+    var route = new Route(data);
+    route.paths("0").should.eql([
         [ '0', '1', '4', '5' ],
         [ '0', '1', '5' ],
         [ '0', '2', '5' ],
@@ -68,10 +68,10 @@ describe("Flow test:", function () {
       "16": []
     };
 
-    var flow = new Flow(data);
-    var paths = flow.paths("0");
+    var route = new Route(data);
+    var paths = route.paths("0");
 
-    flow.posMap().should.eql({
+    route.posMap().should.eql({
         '0': 0,
         '1': 1,
         '2': 1,
@@ -117,10 +117,10 @@ describe("Flow test:", function () {
       "16": []
     };
 
-    var flow = new Flow(data);
-    var paths = flow.paths("0");
+    var route = new Route(data);
+    var paths = route.paths("0");
 
-    flow.position().should.eql(
+    route.position().should.eql(
       [
         [ '0', '1', '4',  '7',  '8', '13', '14', '15', '16' ],
         [ '0', '1', '4',  '9', '10', '13', '14', '15', '16' ],
@@ -156,10 +156,10 @@ describe("Flow test:", function () {
       "16": []
     };
 
-    var flow = new Flow(data);
-    var paths = flow.paths("0");
+    var route = new Route(data);
+    var paths = route.paths("0");
 
-    flow.batch().should.eql( [
+    route.batch().should.eql( [
         [ '0' ],
         [ '1', '2', '3' ],
         [ '4', '5', '6' ],
@@ -197,10 +197,10 @@ describe("Flow test:", function () {
       "16": []
     };
 
-    var flow = new Flow(data);
-    var paths = flow.paths("0");
+    var route = new Route(data);
+    var paths = route.paths("0");
 
-    flow.inputMap().should.eql({
+    route.inputMap().should.eql({
        "0":  [],
        "1":  ["0"],    
        "2":  ["0"],          
@@ -246,8 +246,8 @@ describe("Flow test:", function () {
       "16": []
     };
 
-    var flow = new Flow(data);
-    var paths = flow.paths("4");
+    var route = new Route(data);
+    var paths = route.paths("4");
     paths.should.eql([
       [ '4', '7', '8', '13', '14', '15', '16' ],
       [ '4', '9', '10', '13', '14', '15', '16' ]
@@ -279,9 +279,9 @@ describe("Flow test:", function () {
       "16": []
     };
 
-    var flow = new Flow(data);
-    flow.paths("4");
-    flow.objectMap().should.eql([
+    var route = new Route(data);
+    route.paths("4");
+    route.objectMap().should.eql([
         {
           "0": {
             source: null,
