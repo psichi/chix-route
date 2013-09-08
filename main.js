@@ -25,15 +25,14 @@ var Route = (function () {
     };
 
     Route.prototype.paths = function () {
-        var startNodes = this.startNodes();
-        for (var i = 0; i < startNodes.length; i++) {
+        var startNodes = this.startNodes(), i;
+        for (i = 0; i < startNodes.length; i++) {
             this.branch(startNodes[i]);
         }
 
         return this._paths;
     };
 
-    //public paths(root) {
     Route.prototype.branch = function (root) {
         var that = this;
         function __paths(id, ref) {
@@ -54,13 +53,14 @@ var Route = (function () {
     };
 
     Route.prototype.__inputMap = function () {
-        var startNodes = this.startNodes();
-        for (var i = 0; i < startNodes.length; i++) {
+        var startNodes = this.startNodes(), key, i;
+
+        for (i = 0; i < startNodes.length; i++) {
             this._inputMap[startNodes[i]] = [];
         }
 
-        for (var key in this.routes) {
-            for (var i = 0; i < this.routes[key].length; i++) {
+        for (key in this.routes) {
+            for (i = 0; i < this.routes[key].length; i++) {
                 if (!this._inputMap[this.routes[key][i]])
                     this._inputMap[this.routes[key][i]] = [];
 
@@ -76,15 +76,14 @@ var Route = (function () {
     };
 
     Route.prototype.batch = function () {
-        var pos = this.position();
+        var pos = this.position(), i, j, column, batch = [];
 
         if (!pos.length)
             return [];
 
-        var batch = [];
-        for (var i = 0; i < pos[0].length; i++) {
-            var column = [];
-            for (var j = 0; j < pos.length; j++) {
+        for (i = 0; i < pos[0].length; i++) {
+            column = [];
+            for (j = 0; j < pos.length; j++) {
                 if (column.indexOf(pos[j][i]) < 0 & null !== pos[j][i]) {
                     column.push(pos[j][i]);
                 }
@@ -97,9 +96,9 @@ var Route = (function () {
     };
 
     Route.prototype.position = function () {
-        var posMap = this.posMap();
-        for (var i = 0; i < this._paths.length; i++) {
-            for (var j = 0; j < this._paths[i].length; j++) {
+        var posMap = this.posMap(), i, j;
+        for (i = 0; i < this._paths.length; i++) {
+            for (j = 0; j < this._paths[i].length; j++) {
                 if (j < posMap[this._paths[i][j]]) {
                     // Alert! modifies this._paths in place.
                     this._paths[i].splice(j, 0, null);
@@ -116,9 +115,9 @@ var Route = (function () {
     *
     */
     Route.prototype.posMap = function () {
-        var m = {};
-        for (var i = 0; i < this._paths.length; i++) {
-            for (var j = 0; j < this._paths[i].length; j++) {
+        var m = {}, i, j;
+        for (i = 0; i < this._paths.length; i++) {
+            for (j = 0; j < this._paths[i].length; j++) {
                 if (!m[this._paths[i][j]] || m[this._paths[i][j]] < j) {
                     m[this._paths[i][j]] = j;
                 }
@@ -127,11 +126,18 @@ var Route = (function () {
         return m;
     };
 
-    Route.prototype.links = function () {
-        var links = [];
-        for (var key in this.routes) {
-            for (var i = 0; i < this.routes[key].length; i++) {
-                links.push({ "source": key, "target": this.routes[key][i] });
+    Route.prototype.links = function (l, r) {
+        if (typeof l === "undefined") { l = "source"; }
+        if (typeof r === "undefined") { r = "target"; }
+        var links = [], obj = {}, key, i;
+
+        for (key in this.routes) {
+            for (i = 0; i < this.routes[key].length; i++) {
+                obj = {};
+                obj[l] = key;
+                obj[r] = this.routes[key][i];
+
+                links.push(obj);
             }
         }
 

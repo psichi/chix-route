@@ -38,8 +38,8 @@ class Route {
 
   public paths() {
 
-    var startNodes = this.startNodes();
-    for(var i = 0; i < startNodes.length; i++) {
+    var startNodes = this.startNodes(), i;
+    for(i = 0; i < startNodes.length; i++) {
        this.branch(startNodes[i]);
     }
 
@@ -47,7 +47,6 @@ class Route {
 
   }
 
-  //public paths(root) {
   public branch(root) {
 
     var that = this;
@@ -71,14 +70,15 @@ class Route {
 
   private __inputMap() {
 
-    var startNodes = this.startNodes();
-    for(var i = 0; i < startNodes.length; i++) {
+    var startNodes = this.startNodes(), key, i;
+
+    for(i = 0; i < startNodes.length; i++) {
         this._inputMap[startNodes[i]] = [];
     }
 
-    for(var key in this.routes) {
+    for(key in this.routes) {
 
-      for(var i = 0; i < this.routes[key].length; i++) {
+      for(i = 0; i < this.routes[key].length; i++) {
 
         if(!this._inputMap[this.routes[key][i]]) this._inputMap[this.routes[key][i]] = [];
 
@@ -100,15 +100,14 @@ class Route {
 
   public batch() {
 
-    var pos = this.position();
+    var pos = this.position(), i , j, column, batch = [];
 
     if(!pos.length) return [];
 
-    var batch = [];
-    for(var i = 0; i < pos[0].length; i++) {
+    for(i = 0; i < pos[0].length; i++) {
 
-      var column = [];
-      for(var j = 0; j < pos.length; j++) {
+      column = [];
+      for(j = 0; j < pos.length; j++) {
 
         if(column.indexOf(pos[j][i]) < 0 & null !== pos[j][i]) {
           column.push(pos[j][i]);
@@ -125,9 +124,9 @@ class Route {
 
   public position() {
 
-    var posMap = this.posMap();
-    for(var i = 0; i < this._paths.length; i++) {
-      for(var j = 0; j < this._paths[i].length; j++) {
+    var posMap = this.posMap(), i, j;
+    for(i = 0; i < this._paths.length; i++) {
+      for(j = 0; j < this._paths[i].length; j++) {
 
         if(j < posMap[this._paths[i][j]]) {
 
@@ -149,11 +148,10 @@ class Route {
    *
    */
   public posMap() {
-    var m = {};
-    for(var i = 0; i < this._paths.length; i++) {
-      for(var j = 0; j < this._paths[i].length; j++) {
+    var m = {}, i, j;
+    for(i = 0; i < this._paths.length; i++) {
+      for(j = 0; j < this._paths[i].length; j++) {
 
-        // func 2 
         if(!m[this._paths[i][j]] || m[this._paths[i][j]] < j) {
           m[this._paths[i][j]] = j;
         }
@@ -163,12 +161,18 @@ class Route {
     return m;
   }
 
-  public links() {
+  public links(l = "source", r = "target") {
 
-    var links = [];
-    for(var key in this.routes) {
-      for(var i = 0; i < this.routes[key].length; i++) {
-         links.push({ "source": key, "target": this.routes[key][i]});
+    var links = [], obj = {}, key, i;
+
+    for(key in this.routes) {
+      for(i = 0; i < this.routes[key].length; i++) {
+
+         obj = {}
+         obj[l] = key;
+         obj[r] = this.routes[key][i];
+
+         links.push(obj);
       }
     }
 
