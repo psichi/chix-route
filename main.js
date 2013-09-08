@@ -26,9 +26,7 @@ var Route = (function () {
 
     Route.prototype.paths = function () {
         var startNodes = this.startNodes();
-        console.log(startNodes);
         for (var i = 0; i < startNodes.length; i++) {
-            console.log(startNodes[i]);
             this.branch(startNodes[i]);
         }
 
