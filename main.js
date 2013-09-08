@@ -1,19 +1,49 @@
-var Flow = (function () {
-    function Flow(flow) {
-        this.flow = flow;
+var Route = (function () {
+    function Route(routes) {
+        this.routes = routes;
         this._paths = [];
         this._inputMap = {};
         // create input map, before position() will modify the paths.
         this.__inputMap();
     }
-    Flow.prototype.paths = function (root) {
+    Route.prototype.nodes = function () {
+        return Object.keys(this.routes);
+    };
+
+    Route.prototype.startNodes = function () {
+        var nodes = this.nodes();
+        var startNodes = nodes.slice(0);
+        for (var key in this.routes) {
+            for (var i = 0; i < nodes.length; i++) {
+                if (this.routes[key].indexOf(nodes[i]) >= 0 && startNodes.indexOf(nodes[i]) >= 0) {
+                    startNodes.splice(startNodes.indexOf(nodes[i]), 1);
+                }
+            }
+        }
+
+        return startNodes;
+    };
+
+    Route.prototype.paths = function () {
+        var startNodes = this.startNodes();
+        console.log(startNodes);
+        for (var i = 0; i < startNodes.length; i++) {
+            console.log(startNodes[i]);
+            this.branch(startNodes[i]);
+        }
+
+        return this._paths;
+    };
+
+    //public paths(root) {
+    Route.prototype.branch = function (root) {
         var that = this;
         function __paths(id, ref) {
-            if (that.flow[id].length > 0) {
-                for (var i = 0; i < that.flow[id].length; i++) {
+            if (that.routes[id].length > 0) {
+                for (var i = 0; i < that.routes[id].length; i++) {
                     var d = ref.slice(0);
-                    d.push(that.flow[id][i]);
-                    __paths(that.flow[id][i], d);
+                    d.push(that.routes[id][i]);
+                    __paths(that.routes[id][i], d);
                 }
             } else {
                 that._paths.push(ref);
@@ -25,31 +55,29 @@ var Flow = (function () {
         return this._paths;
     };
 
-    Flow.prototype.__inputMap = function () {
-        var fk = true;
+    Route.prototype.__inputMap = function () {
+        var startNodes = this.startNodes();
+        for (var i = 0; i < startNodes.length; i++) {
+            this._inputMap[startNodes[i]] = [];
+        }
 
-        for (var key in this.flow) {
-            if (fk) {
-                this._inputMap[key] = [];
-                fk = false;
-            }
+        for (var key in this.routes) {
+            for (var i = 0; i < this.routes[key].length; i++) {
+                if (!this._inputMap[this.routes[key][i]])
+                    this._inputMap[this.routes[key][i]] = [];
 
-            for (var i = 0; i < this.flow[key].length; i++) {
-                if (!this._inputMap[this.flow[key][i]])
-                    this._inputMap[this.flow[key][i]] = [];
-
-                this._inputMap[this.flow[key][i]].push(key);
+                this._inputMap[this.routes[key][i]].push(key);
             }
         }
 
         return this._inputMap;
     };
 
-    Flow.prototype.inputMap = function () {
+    Route.prototype.inputMap = function () {
         return this._inputMap;
     };
 
-    Flow.prototype.batch = function () {
+    Route.prototype.batch = function () {
         var pos = this.position();
 
         if (!pos.length)
@@ -70,7 +98,7 @@ var Flow = (function () {
         return batch;
     };
 
-    Flow.prototype.position = function () {
+    Route.prototype.position = function () {
         var posMap = this.posMap();
         for (var i = 0; i < this._paths.length; i++) {
             for (var j = 0; j < this._paths[i].length; j++) {
@@ -89,7 +117,7 @@ var Flow = (function () {
     * Create a position map of the last occurence
     *
     */
-    Flow.prototype.posMap = function () {
+    Route.prototype.posMap = function () {
         var m = {};
         for (var i = 0; i < this._paths.length; i++) {
             for (var j = 0; j < this._paths[i].length; j++) {
@@ -101,12 +129,12 @@ var Flow = (function () {
         return m;
     };
 
-    Flow.prototype.objectMap = function () {
+    Route.prototype.objectMap = function () {
         var objectMap = {};
 
         return objectMap;
     };
-    return Flow;
+    return Route;
 })();
 
-module.exports = Flow;
+module.exports = Route;

@@ -12,7 +12,45 @@ class Route {
 
   }
 
-  public paths(root) {
+  public nodes() {
+
+    return Object.keys(this.routes);
+
+  }
+
+  public startNodes() {
+
+    var nodes = this.nodes();
+    var startNodes = nodes.slice(0);
+    for(var key in this.routes) {
+       for(var i = 0; i < nodes.length; i++ ) {
+         if(this.routes[key].indexOf(nodes[i]) >= 0 &&
+            startNodes.indexOf(nodes[i]) >= 0
+           ) {
+           startNodes.splice(startNodes.indexOf(nodes[i]), 1);
+         }
+       }
+    }
+
+    return startNodes;
+
+  }
+
+  public paths() {
+
+    var startNodes = this.startNodes();
+    console.log(startNodes);
+    for(var i = 0; i < startNodes.length; i++) {
+      console.log(startNodes[i]);
+       this.branch(startNodes[i]);
+    }
+
+    return this._paths;
+
+  }
+
+  //public paths(root) {
+  public branch(root) {
 
     var that = this;
     function __paths(id, ref) {
@@ -35,14 +73,12 @@ class Route {
 
   private __inputMap() {
 
-    var fk = true;
+    var startNodes = this.startNodes();
+    for(var i = 0; i < startNodes.length; i++) {
+        this._inputMap[startNodes[i]] = [];
+    }
 
     for(var key in this.routes) {
-
-      if(fk) {
-        this._inputMap[key] = [];
-        fk = false;
-      }
 
       for(var i = 0; i < this.routes[key].length; i++) {
 

@@ -133,7 +133,6 @@ describe("Route test:", function () {
     done();
 
   });
-
   it("Should batch", function (done) {
 
     var data = {
@@ -247,7 +246,7 @@ describe("Route test:", function () {
     };
 
     var route = new Route(data);
-    var paths = route.paths("4");
+    var paths = route.branch("4");
     paths.should.eql([
       [ '4', '7', '8', '13', '14', '15', '16' ],
       [ '4', '9', '10', '13', '14', '15', '16' ]
@@ -260,6 +259,27 @@ describe("Route test:", function () {
   it("Should be able to provide a source target collection array", function (done) {
 
     var data = {
+      "0": ["1", "2", "3"],
+      "1": ["4", "14"],
+      "2": ["5"],
+      "3": ["6"],
+      "4": ["7", "9"],
+      "5": ["9"],
+      "6": ["11"],
+      "7": ["8"],
+      "8": ["13"],
+      "9": ["10"],
+      "10": ["13"],
+      "11": ["12"],
+      "12": ["13"],
+      "13": ["14"],
+      "14": ["15"],
+      "15": ["16"],
+      "16": []
+    };
+
+    var data = {
+      "0": { "source": "", "target": "1" },
       "0": ["1", "2", "3"],
       "1": ["4", "14"],
       "2": ["5"],
@@ -293,5 +313,74 @@ describe("Route test:", function () {
     done();
 
   });
+
+  it("Should handle chix-flow example data", function (done) {
+
+    // consumable by chix-route
+    var outputMap = {
+
+      // Provider nodes
+      "connect": ['connect-helloworld'], 
+      "mongo": ['mongo-collection'], 
+      "mongo-collection": ["mongo-insert", "mongo-list"],
+      // Data nodes
+      "mongo-insert": ["mongo-close"],
+      "mongo-list": ["input-logger", "mongo-close"],
+      "input-logger": [],
+      "connect-helloworld": [],
+      // Provider Node
+      "mongo-close": []
+    };
+
+    var route = new Route(outputMap);
+    var res = route.paths();
+    route.inputMap().should.eql({
+      // Provider nodes
+      "connect": [], 
+      "connect-helloworld": ["connect"],
+      "mongo-collection": ["mongo"],
+      "mongo-insert": ["mongo-collection"],
+      "mongo-list": ["mongo-collection"],
+      "mongo-close": ["mongo-insert", "mongo-list"],
+      "mongo": [], 
+      // Data nodes
+      "input-logger": ["mongo-list"]
+      // Provider Node
+    });
+
+    done();
+
+  });
+
+  it("Should determine start nodes", function (done) {
+
+    var data = {
+      "0": ["1", "2"],
+      "1": ["4", "14"],
+      "2": ["5"],
+      "3": ["6"],
+      "4": ["9"],
+      "5": ["9"],
+      "6": ["11"],
+      "7": ["8"],
+      "8": ["13"],
+      "9": ["10"],
+      "10": ["13"],
+      "11": ["12"],
+      "12": ["13"],
+      "13": ["14"],
+      "14": ["15"],
+      "15": ["16"],
+      "16": []
+    };
+
+    var route = new Route(data);
+    var startNodes = route.startNodes();
+    startNodes.should.eql(["0","3","7"]);
+
+    done();
+
+  });
+
 
 });
