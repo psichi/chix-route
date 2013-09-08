@@ -278,36 +278,29 @@ describe("Route test:", function () {
       "16": []
     };
 
-    var data = {
-      "0": { "source": "", "target": "1" },
-      "0": ["1", "2", "3"],
-      "1": ["4", "14"],
-      "2": ["5"],
-      "3": ["6"],
-      "4": ["7", "9"],
-      "5": ["9"],
-      "6": ["11"],
-      "7": ["8"],
-      "8": ["13"],
-      "9": ["10"],
-      "10": ["13"],
-      "11": ["12"],
-      "12": ["13"],
-      "13": ["14"],
-      "14": ["15"],
-      "15": ["16"],
-      "16": []
-    };
-
     var route = new Route(data);
-    route.paths("4");
-    route.objectMap().should.eql([
-        {
-          "0": {
-            source: null,
-            target: null,
-          }
-        }
+    route.paths();
+    route.links().should.eql([
+      { "source": "0", "target": "1" },
+      { "source": "0", "target": "2" },
+      { "source": "0", "target": "3" },
+      { "source": "1", "target": "4" },
+      { "source": "1", "target": "14" },
+      { "source": "2", "target": "5" },
+      { "source": "3", "target": "6" },
+      { "source": "4", "target": "7" },
+      { "source": "4", "target": "9" },
+      { "source": "5", "target": "9" },
+      { "source": "6", "target": "11" },
+      { "source": "7", "target": "8" },
+      { "source": "8", "target": "13" },
+      { "source": "9", "target": "10" },
+      { "source": "10", "target": "13" },
+      { "source": "11", "target": "12" },
+      { "source": "12", "target": "13" },
+      { "source": "13", "target": "14" },
+      { "source": "14", "target": "15" },
+      { "source": "15", "target": "16" }
     ]);
 
     done();

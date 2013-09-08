@@ -127,10 +127,15 @@ var Route = (function () {
         return m;
     };
 
-    Route.prototype.objectMap = function () {
-        var objectMap = {};
+    Route.prototype.links = function () {
+        var links = [];
+        for (var key in this.routes) {
+            for (var i = 0; i < this.routes[key].length; i++) {
+                links.push({ "source": key, "target": this.routes[key][i] });
+            }
+        }
 
-        return objectMap;
+        return links;
     };
     return Route;
 })();
