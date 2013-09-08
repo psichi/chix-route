@@ -382,5 +382,32 @@ describe("Route test:", function () {
 
   });
 
+  it("Should route multiple start points", function (done) {
+
+    var data = {
+      "0": ["2"],
+      "1": ["4", "5"],
+      "2": ["5"],
+      "3": ["6"],
+      "4": ["6"],
+      "5": ["7"],
+      "6": [],
+      "7": []
+    };
+
+    var route = new Route(data);
+    var paths = route.paths();
+    paths.should.eql([
+        [ '0', '2', '5', '7' ],
+        [ '1', '4', '6' ],
+        [ '1', '5', '7' ],
+        [ '3', '6' ]
+    ]);
+
+
+    done();
+
+  });
+
 
 });
