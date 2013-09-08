@@ -1,22 +1,5 @@
-Implemented this differently.
+Should be more streamy, not having to know the structure upfront
+Although I must admit the flow has to be huge before this even
+becomes a problem.
 
-I want to follow the tree and keep in memory what the inputs are
-If we arrive at a certain point to provide the input reference
-we can remove that reference as soon as we have provided the input
-because that information is not necessary anymore.
-
-The way I described it now is just to thoroughly explain what is
-going on. The code itself can be simplified even more.
-
-Anyway, for now it's not that important.
-
-But with very large flows, we just want to flow on, and not just
-read the entire flow structure and then execute it.
-It will also make continuous flows possible, circular etc.
-
-The system could receive an unknown flow, and must be able to "stream"
-that flow. We do not want to wait until the entire flow specification is loaded.
-
-This continuous flow is very interesting, it could be combined with streaming.
-
-Streaming blackboxes to be executed.
+You will have to keep a reference of all previous nodes.
