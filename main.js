@@ -1,10 +1,8 @@
 var Route = (function () {
-    function Route(routes) {
-        this.routes = routes;
+    function Route() {
         this._paths = [];
         this._inputMap = {};
-        // create input map, before position() will modify the paths.
-        this.__inputMap();
+        this.routes = {};
     }
     Route.prototype.nodes = function () {
         return Object.keys(this.routes);
@@ -36,7 +34,7 @@ var Route = (function () {
     Route.prototype.branch = function (root) {
         var that = this;
         function __paths(id, ref) {
-            if (that.routes[id].length > 0) {
+            if (that.routes[id] && that.routes[id].length > 0) {
                 for (var i = 0; i < that.routes[id].length; i++) {
                     var d = ref.slice(0);
                     d.push(that.routes[id][i]);
@@ -100,7 +98,6 @@ var Route = (function () {
         for (i = 0; i < this._paths.length; i++) {
             for (j = 0; j < this._paths[i].length; j++) {
                 if (j < posMap[this._paths[i][j]]) {
-                    // Alert! modifies this._paths in place.
                     this._paths[i].splice(j, 0, null);
                 }
             }
@@ -109,11 +106,6 @@ var Route = (function () {
         return this._paths;
     };
 
-    /**
-    *
-    * Create a position map of the last occurence
-    *
-    */
     Route.prototype.posMap = function () {
         var m = {}, i, j;
         for (i = 0; i < this._paths.length; i++) {
@@ -126,16 +118,37 @@ var Route = (function () {
         return m;
     };
 
-    Route.prototype.links = function (l, r) {
-        if (typeof l === "undefined") { l = "source"; }
-        if (typeof r === "undefined") { r = "target"; }
+    Route.prototype.load = function (routes) {
+        this.routes = routes;
+
+        this.__inputMap();
+    };
+
+    Route.prototype.loadSourceTarget = function (st, s, t) {
+        if (typeof s === "undefined") { s = "source"; }
+        if (typeof t === "undefined") { t = "target"; }
+        var i;
+
+        this.routes = {};
+        for (i = 0; i < st.length; i++) {
+            if (!this.routes[st[i][s]])
+                this.routes[st[i][s]] = [];
+            this.routes[st[i][s]].push(st[i][t]);
+        }
+
+        this.__inputMap();
+    };
+
+    Route.prototype.links = function (s, t) {
+        if (typeof s === "undefined") { s = "source"; }
+        if (typeof t === "undefined") { t = "target"; }
         var links = [], obj = {}, key, i;
 
         for (key in this.routes) {
             for (i = 0; i < this.routes[key].length; i++) {
                 obj = {};
-                obj[l] = key;
-                obj[r] = this.routes[key][i];
+                obj[s] = key;
+                obj[t] = this.routes[key][i];
 
                 links.push(obj);
             }

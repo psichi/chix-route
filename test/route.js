@@ -13,7 +13,8 @@ describe("Route test:", function () {
       "2": []
     };
 
-    var route = new Route(data);
+    var route = new Route();
+    route.load(data);
     route.paths("0").should.eql([
         [ '0', '1', '2' ],
         [ '0', '2' ]
@@ -34,7 +35,8 @@ describe("Route test:", function () {
       "5": []
     };
 
-    var route = new Route(data);
+    var route = new Route();
+    route.load(data);
     route.paths("0").should.eql([
         [ '0', '1', '4', '5' ],
         [ '0', '1', '5' ],
@@ -68,7 +70,8 @@ describe("Route test:", function () {
       "16": []
     };
 
-    var route = new Route(data);
+    var route = new Route();
+    route.load(data);
     var paths = route.paths("0");
 
     route.posMap().should.eql({
@@ -117,7 +120,8 @@ describe("Route test:", function () {
       "16": []
     };
 
-    var route = new Route(data);
+    var route = new Route();
+    route.load(data);
     var paths = route.paths("0");
 
     route.position().should.eql(
@@ -155,7 +159,8 @@ describe("Route test:", function () {
       "16": []
     };
 
-    var route = new Route(data);
+    var route = new Route();
+    route.load(data);
     var paths = route.paths("0");
 
     route.batch().should.eql( [
@@ -196,7 +201,8 @@ describe("Route test:", function () {
       "16": []
     };
 
-    var route = new Route(data);
+    var route = new Route();
+    route.load(data);
     var paths = route.paths("0");
 
     route.inputMap().should.eql({
@@ -245,7 +251,8 @@ describe("Route test:", function () {
       "16": []
     };
 
-    var route = new Route(data);
+    var route = new Route();
+    route.load(data);
     var paths = route.branch("4");
     paths.should.eql([
       [ '4', '7', '8', '13', '14', '15', '16' ],
@@ -255,6 +262,61 @@ describe("Route test:", function () {
     done();
 
   });
+  
+  it("Should be able to load a source target collection array", function (done) {
+
+    var data = [
+      { "source": "0", "target": "1" },
+      { "source": "0", "target": "2" },
+      { "source": "0", "target": "3" },
+      { "source": "1", "target": "4" },
+      { "source": "1", "target": "14" },
+      { "source": "2", "target": "5" },
+      { "source": "3", "target": "6" },
+      { "source": "4", "target": "7" },
+      { "source": "4", "target": "9" },
+      { "source": "5", "target": "9" },
+      { "source": "6", "target": "11" },
+      { "source": "7", "target": "8" },
+      { "source": "8", "target": "13" },
+      { "source": "9", "target": "10" },
+      { "source": "10", "target": "13" },
+      { "source": "11", "target": "12" },
+      { "source": "12", "target": "13" },
+      { "source": "13", "target": "14" },
+      { "source": "14", "target": "15" },
+      { "source": "15", "target": "16" }
+    ];
+
+    var route = new Route();
+    route.loadSourceTarget(data);
+    //console.log(route.paths());
+    /*
+    route.links().should.eql({
+      "0": ["1", "2", "3"],
+      "1": ["4", "14"],
+      "2": ["5"],
+      "3": ["6"],
+      "4": ["7", "9"],
+      "5": ["9"],
+      "6": ["11"],
+      "7": ["8"],
+      "8": ["13"],
+      "9": ["10"],
+      "10": ["13"],
+      "11": ["12"],
+      "12": ["13"],
+      "13": ["14"],
+      "14": ["15"],
+      "15": ["16"],
+      "16": []
+    });
+    */
+
+    done();
+
+  });
+
 
   it("Should be able to provide a source target collection array", function (done) {
 
@@ -278,7 +340,8 @@ describe("Route test:", function () {
       "16": []
     };
 
-    var route = new Route(data);
+    var route = new Route();
+    route.load(data);
     route.paths();
     route.links().should.eql([
       { "source": "0", "target": "1" },
@@ -310,7 +373,7 @@ describe("Route test:", function () {
   it("Should handle chix-flow example data", function (done) {
 
     // consumable by chix-route
-    var outputMap = {
+    var data = {
 
       // Provider nodes
       "connect": ['connect-helloworld'], 
@@ -325,7 +388,8 @@ describe("Route test:", function () {
       "mongo-close": []
     };
 
-    var route = new Route(outputMap);
+    var route = new Route();
+    route.load(data);
     var res = route.paths();
     route.inputMap().should.eql({
       // Provider nodes
@@ -367,7 +431,8 @@ describe("Route test:", function () {
       "16": []
     };
 
-    var route = new Route(data);
+    var route = new Route();
+    route.load(data);
     var startNodes = route.startNodes();
     startNodes.should.eql(["0","3","7"]);
 
@@ -388,7 +453,8 @@ describe("Route test:", function () {
       "7": []
     };
 
-    var route = new Route(data);
+    var route = new Route();
+    route.load(data);
     var paths = route.paths();
     paths.should.eql([
         [ '0', '2', '5', '7' ],
@@ -401,6 +467,5 @@ describe("Route test:", function () {
     done();
 
   });
-
 
 });
