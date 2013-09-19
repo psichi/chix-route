@@ -124,6 +124,11 @@ var Route = (function () {
         this.__inputMap();
     };
 
+    Route.prototype.loadSourceTargetWithPorts = function (st, s, t) {
+        if (typeof s === "undefined") { s = "source"; }
+        if (typeof t === "undefined") { t = "target"; }
+    };
+
     Route.prototype.loadSourceTarget = function (st, s, t) {
         if (typeof s === "undefined") { s = "source"; }
         if (typeof t === "undefined") { t = "target"; }
@@ -133,7 +138,9 @@ var Route = (function () {
         for (i = 0; i < st.length; i++) {
             if (!this.routes[st[i][s]])
                 this.routes[st[i][s]] = [];
-            this.routes[st[i][s]].push(st[i][t]);
+            if (this.routes[st[i][s]].indexOf(st[i][t]) >= 0) {
+                this.routes[st[i][s]].push(st[i][t]);
+            }
         }
 
         this.__inputMap();

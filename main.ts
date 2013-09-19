@@ -165,7 +165,13 @@ class Route {
     // create input map, before position() will modify the paths.
     this.__inputMap();
   }
+  
+  public loadSourceTargetWithPorts(st, s = "source", t = "target") {
+      
+    
+  }
 
+  // will remove duplicates and thus port in formation
   public loadSourceTarget(st, s = "source", t = "target") {
     
     var i;
@@ -173,7 +179,9 @@ class Route {
     this.routes = {};
     for (i = 0; i < st.length; i++) {
       if (!this.routes[st[i][s]]) this.routes[st[i][s]] = [];
-      this.routes[st[i][s]].push(st[i][t]);
+      if(this.routes[st[i][s]].indexOf(st[i][t]) >= 0) {
+        this.routes[st[i][s]].push(st[i][t]);
+      }
     }
     
     // create input map, before position() will modify the paths.
