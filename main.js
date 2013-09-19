@@ -138,7 +138,7 @@ var Route = (function () {
         for (i = 0; i < st.length; i++) {
             if (!this.routes[st[i][s]])
                 this.routes[st[i][s]] = [];
-            if (this.routes[st[i][s]].indexOf(st[i][t]) >= 0) {
+            if (this.routes[st[i][s]].indexOf(st[i][t]) === -1) {
                 this.routes[st[i][s]].push(st[i][t]);
             }
         }
