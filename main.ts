@@ -51,10 +51,12 @@ class Route {
       if (that.routes[id] && that.routes[id].length > 0) {
         for (var i = 0; i < that.routes[id].length; i++) {
           var d = ref.slice(0);
+          console.log('%s: pushing:', id, that.routes[id][i]);
           d.push(that.routes[id][i]);
           __paths(that.routes[id][i], d);
         }
       } else {
+        console.log('%s: pushing:', id, ref);
         that._paths.push(ref);
       }
     }
@@ -177,12 +179,20 @@ class Route {
     var i;
 
     this.routes = {};
+    
+    // buggy, in __path somewhere the key is taken, it's numeric
+    // yet a string, internally everything should be a string.
+    // will lead to arrays like ['1', 2, 3], which will
+    // also make a route [2, 3], because '1' != 1
+    
     for (i = 0; i < st.length; i++) {
       if (!this.routes[st[i][s]]) this.routes[st[i][s]] = [];
       if(this.routes[st[i][s]].indexOf(st[i][t]) === -1) {
         this.routes[st[i][s]].push(st[i][t]);
       }
     }
+
+    console.log('routes:', this.routes);
     
     // create input map, before position() will modify the paths.
     this.__inputMap();

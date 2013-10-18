@@ -37,10 +37,12 @@ var Route = (function () {
             if (that.routes[id] && that.routes[id].length > 0) {
                 for (var i = 0; i < that.routes[id].length; i++) {
                     var d = ref.slice(0);
+                    console.log('%s: pushing:', id, that.routes[id][i]);
                     d.push(that.routes[id][i]);
                     __paths(that.routes[id][i], d);
                 }
             } else {
+                console.log('%s: pushing:', id, ref);
                 that._paths.push(ref);
             }
         }
@@ -135,6 +137,7 @@ var Route = (function () {
         var i;
 
         this.routes = {};
+
         for (i = 0; i < st.length; i++) {
             if (!this.routes[st[i][s]])
                 this.routes[st[i][s]] = [];
@@ -142,6 +145,8 @@ var Route = (function () {
                 this.routes[st[i][s]].push(st[i][t]);
             }
         }
+
+        console.log('routes:', this.routes);
 
         this.__inputMap();
     };
